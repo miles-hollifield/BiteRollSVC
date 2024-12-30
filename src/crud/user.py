@@ -2,20 +2,16 @@ from sqlalchemy.orm import Session
 from src.models.user import User
 from src.schemas.user import UserCreate
 
+# Retrieve all users
 def get_users(db: Session):
-    """Retrieve all users from the database."""
     return db.query(User).all()
 
+# Retrieve a user by ID
 def get_user_by_id(db: Session, user_id: int):
-    """Retrieve a single user by ID."""
     return db.query(User).filter(User.user_id == user_id).first()
 
-def get_user_by_username(db: Session, username: str):
-    """Retrieve a user by their username."""
-    return db.query(User).filter(User.username == username).first()
-
+# Create a new user
 def create_user(db: Session, user: UserCreate):
-    """Create a new user."""
     db_user = User(
         firstname=user.firstname,
         lastname=user.lastname,
@@ -29,8 +25,22 @@ def create_user(db: Session, user: UserCreate):
     db.refresh(db_user)
     return db_user
 
+# Update an existing user by ID
+def update_user(db: Session, user_id: int, user: UserCreate):
+    db_user = get_user_by_id(db, user_id)
+    if db_user:
+        db_user.firstname = user.firstname
+        db_user.lastname = user.lastname
+        db_user.username = user.username
+        db_user.email = user.email
+        db_user.avatar = user.avatar
+        db_user.password = user.password  # In production, hash the password!
+        db.commit()
+        db.refresh(db_user)
+    return db_user
+
+# Delete a user by ID
 def delete_user(db: Session, user_id: int):
-    """Delete a user by ID."""
     db_user = get_user_by_id(db, user_id)
     if db_user:
         db.delete(db_user)

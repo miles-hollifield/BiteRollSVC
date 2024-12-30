@@ -10,7 +10,7 @@ class UserBase(BaseModel):
     avatar: Optional[str] = None
 
 class UserCreate(UserBase):
-    """Schema for creating a new user."""
+    """Schema for creating or updating a user."""
     password: str
 
 class User(UserBase):

@@ -8,7 +8,7 @@ class RestaurantBase(BaseModel):
     restaurant_website: Optional[str] = None
 
 class RestaurantCreate(RestaurantBase):
-    """Schema for creating a new restaurant."""
+    """Schema for creating or updating a restaurant."""
     pass
 
 class Restaurant(RestaurantBase):
