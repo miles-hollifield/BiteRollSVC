@@ -18,14 +18,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str, salt: str) -> str:
-    """Hash a password using the provided salt."""
-    salted_password = password + salt
-    return bcrypt.hashpw(salted_password.encode(), salt.encode()).decode()
+    """Hash a password with the given salt."""
+    salted_password = (password + salt).encode()  # Combine password with salt
+    return bcrypt.hashpw(salted_password, bcrypt.gensalt()).decode()
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash."""
-    return pwd_context.verify(plain_password, hashed_password)
-
+def verify_password(plain_password: str, hashed_password: str, salt: str) -> bool:
+    """Verify a plain password against a hashed password using the same salt."""
+    salted_password = (plain_password + salt).encode()  # Combine entered password with salt
+    return bcrypt.checkpw(salted_password, hashed_password.encode())
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create a JWT token."""
     to_encode = data.copy()

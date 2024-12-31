@@ -17,9 +17,12 @@ class UserResponse(BaseModel):
     firstname: str
     lastname: str
     username: str
-    email: str
+    email: EmailStr
     is_active: bool
     is_verified: bool
+
+    class Config:
+        from_attributes = True
 
 class User(BaseModel):
     user_id: int
