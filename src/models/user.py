@@ -12,7 +12,6 @@ class User(Base):
     username = Column(String(100), nullable=False, unique=True)
     email = Column(String(100), nullable=False, unique=True)
     avatar = Column(Text, nullable=True)
-    salt = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
     is_verified = Column(Boolean, nullable=False, default=False)

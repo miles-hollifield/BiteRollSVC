@@ -1,31 +1,25 @@
-from passlib.context import CryptContext
-from typing import Optional
+import bcrypt
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
+from jose import jwt, JWTError
+from typing import Optional
 from dotenv import load_dotenv
 import os
-import bcrypt
 
 # Load environment variables
 load_dotenv()
 
-# Secret key for JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt."""
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
-def hash_password(password: str, salt: str) -> str:
-    """Hash a password with the given salt."""
-    salted_password = (password + salt).encode()  # Combine password with salt
-    return bcrypt.hashpw(salted_password, bcrypt.gensalt()).decode()
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against a hashed password."""
+    return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
-def verify_password(plain_password: str, hashed_password: str, salt: str) -> bool:
-    """Verify a plain password against a hashed password using the same salt."""
-    salted_password = (plain_password + salt).encode()  # Combine entered password with salt
-    return bcrypt.checkpw(salted_password, hashed_password.encode())
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create a JWT token."""
     to_encode = data.copy()
