@@ -2,11 +2,10 @@ from pydantic import BaseModel
 
 class FavoriteBase(BaseModel):
     """Base schema shared by all favorite schemas."""
-    user_id: int
     restaurant_id: int
 
 class FavoriteCreate(FavoriteBase):
-    """Schema for creating or updating a favorite."""
+    """Schema for creating a favorite."""
     pass
 
 class Favorite(FavoriteBase):
