@@ -1,21 +1,41 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-class UserBase(BaseModel):
-    """Base schema shared by all user schemas."""
+class UserRegister(BaseModel):
+    firstname: str
+    lastname: str
+    username: str
+    email: EmailStr
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class UserResponse(BaseModel):
+    user_id: int
     firstname: str
     lastname: str
     username: str
     email: str
-    avatar: Optional[str] = None
+    is_active: bool
+    is_verified: bool
 
-class UserCreate(UserBase):
-    """Schema for creating or updating a user."""
-    password: str
-
-class User(UserBase):
-    """Schema for returning user data."""
+class User(BaseModel):
     user_id: int
+    firstname: str
+    lastname: str
+    username: str
+    email: EmailStr
+    is_active: bool
+    is_verified: bool
 
     class Config:
-        from_attributes = True  # Enable ORM compatibility
+        from_attributes = True
+
+class UserCreate(BaseModel):
+    firstname: str
+    lastname: str
+    username: str
+    email: EmailStr
+    password: str

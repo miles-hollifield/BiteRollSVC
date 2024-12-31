@@ -1,4 +1,4 @@
-from .user import User, UserCreate
+from .user import UserRegister, UserLogin, UserResponse
 from .restaurant import Restaurant, RestaurantCreate
 from .set import Set, SetCreate
 from .favorite import Favorite, FavoriteCreate
