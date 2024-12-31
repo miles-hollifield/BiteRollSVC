@@ -1,6 +1,10 @@
+from dotenv import load_dotenv
+import os
 from fastapi import APIRouter, HTTPException, Query
 import requests
-import os
+
+# Load the .env file from the root directory
+load_dotenv()
 
 router = APIRouter()
 
