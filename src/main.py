@@ -1,19 +1,26 @@
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.api import users, restaurants, sets, favorites, set_entries, yelp
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Debug: Print environment variable to verify loading
-print("YELP_API_KEY:", os.getenv("YELP_API_KEY"))
 
 # Initialize FastAPI app
 app = FastAPI(
     title="BiteRoll API",
     description="API for managing users, restaurants, sets, and integrating Yelp",
     version="1.0.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with your frontend's URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include routers
